@@ -1,0 +1,161 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Scripts/track.gd" type="Script" id=1]
+[ext_resource path="res://Sprites/player.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/runner.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/hurdle.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/robot.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Fonts/Inter-Regular.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://Scripts/main.gd" type="Script" id=7]
+[ext_resource path="res://Scripts/lines.gd" type="Script" id=8]
+[ext_resource path="res://Scenes/top_menu.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Sprites/title.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/you_died.png" type="Texture" id=12]
+[ext_resource path="res://Sprites/track.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/background.png" type="Texture" id=14]
+[ext_resource path="res://Fonts/Roboto-Bold.ttf" type="DynamicFontData" id=15]
+
+[sub_resource type="AtlasTexture" id=1]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 0, 0, 45, 60 )
+
+[sub_resource type="AtlasTexture" id=2]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 45, 0, 45, 60 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 2 )
+region = Rect2( 90, 0, 45, 60 )
+
+[sub_resource type="SpriteFrames" id=4]
+animations = [ {
+"frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 3.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 16.7192, 17.0742 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 28
+font_data = ExtResource( 15 )
+
+[sub_resource type="DynamicFont" id=7]
+size = 28
+outline_size = 1
+font_data = ExtResource( 6 )
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource( 7 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 511.641, 300 )
+texture = ExtResource( 14 )
+
+[node name="Track" type="Node2D" parent="."]
+script = ExtResource( 1 )
+
+[node name="Lines" type="Node2D" parent="Track"]
+position = Vector2( 512, 300 )
+script = ExtResource( 8 )
+
+[node name="Sprite" type="Sprite" parent="Track/Lines"]
+texture = ExtResource( 13 )
+
+[node name="Robot" parent="." instance=ExtResource( 5 )]
+position = Vector2( 318.582, 244.577 )
+
+[node name="Hurdle" parent="." instance=ExtResource( 4 )]
+position = Vector2( 591, 261 )
+start_angle = 5.0
+
+[node name="Runner" type="AnimatedSprite" parent="."]
+position = Vector2( 718.006, 300.277 )
+playing = true
+script = ExtResource( 3 )
+
+[node name="RunnerSprite" type="AnimatedSprite" parent="Runner"]
+position = Vector2( -1, 0 )
+frames = SubResource( 4 )
+playing = true
+
+[node name="Tween" type="Tween" parent="Runner"]
+
+[node name="Area2D" type="Area2D" parent="Runner"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Runner/Area2D"]
+position = Vector2( 1.84412, 1.22943 )
+shape = SubResource( 5 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = 16.2874
+margin_top = 430.298
+margin_right = 277.288
+margin_bottom = 619.298
+custom_fonts/font = SubResource( 6 )
+text = "         or wasd to move left and right.
+The hurdles will slow you down."
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+margin_left = 16.2874
+margin_top = 430.298
+margin_right = 277.288
+margin_bottom = 619.298
+custom_fonts/font = SubResource( 7 )
+text = "←→"
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ScoreLabel" type="Label" parent="."]
+margin_left = 779.053
+margin_top = 537.976
+margin_right = 1005.05
+margin_bottom = 572.976
+custom_fonts/font = SubResource( 6 )
+text = "Score: 0"
+align = 2
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HighScoreLabel" type="Label" parent="."]
+margin_left = 779.053
+margin_top = 503.976
+margin_right = 1005.05
+margin_bottom = 538.976
+custom_fonts/font = SubResource( 6 )
+text = "High Score: 0"
+align = 2
+autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StartMenu" parent="." instance=ExtResource( 9 )]
+
+[node name="Sprite2" type="Sprite" parent="StartMenu"]
+position = Vector2( 508.777, 289.251 )
+texture = ExtResource( 10 )
+
+[node name="DieMenu" parent="." instance=ExtResource( 9 )]
+
+[node name="Sprite2" type="Sprite" parent="DieMenu"]
+position = Vector2( 566.715, 309.237 )
+texture = ExtResource( 12 )
+[connection signal="area_entered" from="Runner/Area2D" to="Runner" method="_on_Area2D_area_entered"]
+
+[editable path="StartMenu"]
+
+[editable path="DieMenu"]

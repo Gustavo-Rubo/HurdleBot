@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/hurdletrack2.ogg-19d03e7204434cfdcbac3f3b7fea0d95.oggstr"
+
+[deps]
+
+source_file="res://Audio/hurdletrack2.ogg"
+dest_files=[ "res://.import/hurdletrack2.ogg-19d03e7204434cfdcbac3f3b7fea0d95.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
