@@ -17,6 +17,26 @@ func _process(delta):
 			Globals.high_score = Globals.score
 			$HighScoreLabel.set_text("High Score: " + String(int(Globals.high_score)))
 
+# Hack for mobile inputs
+var drag_x = 0
+func _unhandled_input(event):
+	
+	if event is InputEventScreenDrag:
+		drag_x += event.get_relative().x
+		
+	if event is InputEventScreenTouch:
+		if not event.is_pressed():
+			
+			# This new event will emulate a key press
+			var event_mock = InputEventAction.new()
+			event_mock.pressed = true
+			if drag_x > 0:
+				event_mock.action = "ui_right"
+			elif drag_x < 0:
+				event_mock.action = "ui_left"
+			drag_x = 0
+			Input.parse_input_event(event_mock)
+
 
 func _input(event):
 	if Globals.state == Globals.states.START or Globals.state == Globals.states.DIED:
